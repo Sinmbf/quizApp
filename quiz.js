@@ -1,4 +1,3 @@
-
 // Select Items
 const questionForm = document.querySelector(".questionForm");
 const title = document.querySelector(".title");
@@ -7,8 +6,8 @@ const title = document.querySelector(".title");
 const filterQuestions = JSON.parse(localStorage.getItem("filterQuestions"));
 
 // Total score(Total no. of questions)
-const totalScore=filterQuestions.length;
-let correctAns=0;
+const totalScore = filterQuestions.length;
+let correctAns = 0;
 
 // Get participant information from session storage
 const participant = JSON.parse(sessionStorage.getItem("participant"));
@@ -16,7 +15,8 @@ const participant = JSON.parse(sessionStorage.getItem("participant"));
 // Function to display questions
 const displayQuestions = () => {
     // To make the name of the related radio buttons same
-    let count = 0;
+    let count1 = 0;
+    let count2 = 0;
     // Shuffle the elements(questions) of the array
     shuffleArray(filterQuestions);
     // Loop through the questions of the array
@@ -27,15 +27,16 @@ const displayQuestions = () => {
         shuffleArray(options);
         // Loop through the options of the array
         const option = options.map((element, index) => {
+            count1++;
             return `
                 <div class="form-check mb-4">
-                        <input type="radio" value="${element}" class="form-check-input" id="${element.split(" ").join("")}${index}" name="radio-stacked${count}" required>
-                        <label class="form-check-label" for="${element.split(" ").join("")}${index}">${element}</label>
+                        <input type="radio" value="${element}" class="form-check-input" id="${count1}" name="radio-stacked${count2}" required>
+                        <label class="form-check-label" for="${count1}">${element}</label>
                         <div class="invalid-feedback">Please choose one!</div>
                 </div>
             `
         }).join("");
-        count++;
+        count2++;
         // Create an html for the questions
         return `
             <div class="col-md-7 col-10 border mt-4 rounded p-3 bg-warning p-2 text-dark bg-opacity-75">
@@ -88,9 +89,9 @@ function shuffleArray(array) {
 }
 
 // Function to mark correct answer
-const markCorrectAns=(ans)=>{
+const markCorrectAns = (ans) => {
     ans.classList.add("bg-success");
-    ans.disabled=false;
+    ans.disabled = false;
 }
 
 // Function to check answers
@@ -98,84 +99,75 @@ const checkAnswers = () => {
     // Select all the inputs(answers) provided
     const answers = document.querySelectorAll(".form-check-input");
     const answerArr = [...answers];
-    const checkedAns = answerArr.filter(answer => {
+    const checkedAns = answerArr.reduce((value, answer) => {
         if (answer.checked) {
-            return answer;
+            value.push(answer)
         }
-    })
-    // Mark the correct answer
-    answerArr.forEach(ans=>{
-        filterQuestions.forEach(question=>{
-            if(question.answer===ans.value){
-                markCorrectAns(ans);
-            }
-        })
-    })
-    // Check answers
-    checkedAns.forEach(ans => {
-        filterQuestions.forEach(question => {
-            if (question.answer === ans.value) {
-                correctAns++;
-                // Change the container of correct ans to green
-                const ansContainer = ans.parentElement.parentElement;
-                ansContainer.classList.remove("bg-warning");
-                ansContainer.classList.add("bg-success");
-            }
-            
-        })
-        // Change the container of wrong ans to red
-        const ansContainer = ans.parentElement.parentElement;
-        if (ansContainer.classList.contains("bg-warning")) {
+        return value;
+    }, [])
+    checkedAns.forEach((ans, index) => {
+        if (ans.value === filterQuestions[index].answer) {
+            correctAns++;
+            const ansContainer = ans.parentElement.parentElement;
+            ansContainer.classList.remove("bg-warning");
+            ansContainer.classList.add("bg-success");
+            ans.disabled = false;
+        } else {
+            const ansContainer = ans.parentElement.parentElement;
             ansContainer.classList.remove("bg-warning");
             ansContainer.classList.add("bg-danger");
-            ans.classList.add("bg-danger");
-            ans.disabled=false;
+            ans.disabled = false;
+            const input=ansContainer.querySelectorAll(".form-check-input");
+            input.forEach(element=>{
+                if(element.value===filterQuestions[index].answer){
+                    element.classList.add("bg-success");
+                    element.disabled=false;
+                }
+            })
+
         }
     })
 
 }
 
 // Function to insert modal(show score)
-const showScore=()=>{
-    document.getElementById("submit").disabled=true;
+const showScore = () => {
+    document.getElementById("submit").disabled = true;
     document.getElementById("showAns").classList.remove("d-none");
     document.getElementById("showAns").classList.add("d-block");
     // Select modal title
-    const modalTitle=document.querySelector(".modal-title");
+    const modalTitle = document.querySelector(".modal-title");
     modalTitle.innerHTML = `<strong>Your Score: ${correctAns}/${totalScore}</strong>`
     // Show alert according to the score of the participant
-    const scoreElement=document.querySelector(".score");
-    showResponse(scoreElement,participant[0].uName,correctAns);
+    const scoreElement = document.querySelector(".score");
+    showResponse(scoreElement, participant[0].uName, correctAns);
 }
 
 // Function to give response to the participant about his performance
-const showResponse=(element,participant,score)=>{
+const showResponse = (element, participant, score) => {
     let text;
-    if(score<1){
+    if (score < 1) {
         text = `Thank you <strong>${participant}</strong> for participating in the quiz! It seems you didn't answer any of the questions. Feel free to try again in the future.`
-    }
-    else if(score>=Math.floor(totalScore/2)){
+    } else if (score >= Math.floor(totalScore / 2)) {
         text = `Good job on the quiz <strong>${participant}</strong>! Your performance was solid and shows potential for improvement. Keep it up!`
-    }
-    else if(score<Math.floor(totalScore/2)){
+    } else if (score < Math.floor(totalScore / 2)) {
         text = `Thank you for taking part <strong>${participant}.</strong> Your performance was below average, but remember, every challenge is an opportunity to learn and grow. Keep it up!`
-    }
-    else if(score===totalScore){
+    } else if (score === totalScore) {
         text = `Congratulations <strong>${participant}</strong>! You answered all the questions correctly. Impressive! 🎉👏`
     }
-    element.innerHTML=`${text}`
+    element.innerHTML = `${text}`
 }
 
 // Function to go to category page
-const goToCategory=()=>{
-    window.location.href="./category.html";
+const goToCategory = () => {
+    window.location.href = "./category.html";
 }
 
 // Function to disable input
-const disableInput=()=>{
-    const inputs=document.querySelectorAll("input");
-    inputs.forEach(input=>{
-        input.disabled=true;
+const disableInput = () => {
+    const inputs = document.querySelectorAll("input");
+    inputs.forEach(input => {
+        input.disabled = true;
     })
 }
 
@@ -197,5 +189,5 @@ questionForm.addEventListener("submit", (e) => {
     checkAnswers();
     // Insert modal(show score)
     showScore();
-    
+
 })

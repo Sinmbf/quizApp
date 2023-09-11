@@ -18,6 +18,7 @@
         </div>
         <!-- form -->
         <div class="row justify-content-center">
+            <!-- Form 1 -->
             <div class="col-lg-6">
                 <form class="needs-validation" novalidate>
                     <!-- Email -->
@@ -58,10 +59,57 @@
                     </div>
                     <!-- Submit Button -->
                     <div class="text-center">
-                        <button class="btn btn-primary w-100">Submit</button>
+                        <button type="submit" class="btn btn-primary w-100">Submit</button>
                     </div>
                 </form>
             </div>
+            <!-- End of form 1 -->
+            <!-- Form 1 -->
+            <div class="col-lg-6">
+                <form class="needs-validation" novalidate>
+                    <!-- Email -->
+                    <div class="form-floating my-4">
+                        <input type="email" id="email" class="form-control" placeholder="eg. sinmbf@gmail.com" required>
+                        <label for="email" class="form-label">Email</label>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+
+                    <!-- Name -->
+                    <div class="form-floating my-4">
+                        <input type="text" id="name" class="form-control" placeholder="eg. Sinmbf" required>
+                        <label for="name" class="form-label">Name</label>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+                    <!-- Subjects -->
+                    <label for="subjects" class="form-label">Subjects:</label>
+                    <select name="subjects" id="subjects" class="form-select" required>
+                        <option selected disabled value="">Select...</option>
+                        <option value="website">Website</option>
+                        <option value="technology">Technology</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Please select a valid state.
+                    </div>
+                    <!-- Query -->
+                    <div class="form-floating my-4">
+                        <textarea name="query" id="query" style="height:10rem" placeholder="Write something" class="form-control" required></textarea>
+                        <label for="query" class="form-label">Write something</label>
+                        <div class="invalid-feedback">
+                            Please write something.
+                        </div>
+                    </div>
+                    <!-- Submit Button -->
+                    <div class="text-center">
+                        <button class="btn btn-primary w-100" type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+            <!-- End of form 1 -->
         </div>
     </div>
     </div>
