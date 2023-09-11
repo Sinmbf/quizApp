@@ -46,6 +46,7 @@ form.addEventListener("submit",(e)=>{
     `
     // Redirect to category page
     setTimeout(()=>{
+        console.log("set")
         window.location.href = "https://sinmbf.github.io/quizApp/category.html";
     },2000)
     }
