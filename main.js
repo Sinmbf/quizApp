@@ -39,11 +39,13 @@ form.addEventListener("submit",(e)=>{
     arr.push({uName:uName.value,email:email.value,gender:checkGender});
     sessionStorage.setItem("participant",JSON.stringify(arr));
     if(sessionStorage.length>0){
+        console.log("more than 0")
         formContainer.innerHTML = `
         <div class="alert alert-success" role="alert">
             Your form has been successfully submitted! <strong> Redirecting you to the questions page...</strong>
         </div>
     `
+    console.log('middle')
     // Redirect to category page
     setTimeout(()=>{
         console.log("set")
