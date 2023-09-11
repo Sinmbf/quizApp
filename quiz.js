@@ -42,8 +42,9 @@ const displayQuestions = () => {
                 <!-- Question  -->
                 <p class="fs-5">${index+1}. ${question.question}</p>
                 ${option}
-            </div>
                 
+                </div>
+                <hr class = "d-md-none border border-black border-2 opacity-100 mt-5 col-11" >
         `
     }).join("");
     // Add the html to the document
